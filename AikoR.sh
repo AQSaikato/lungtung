@@ -7,8 +7,8 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 # Cài đặt AikoR
-wget --no-check-certificate -O install.sh https://raw.githubusercontent.com/AikoCute-Offical/AikoR-install/dev/install.sh
-bash install.sh
+wget --no-check-certificate -O AikoR.sh https://raw.githubusercontent.com/AikoCute-Offical/AikoR-install/dev/install.sh
+bash AikoR.sh
 
 # Đường dẫn đến thư mục AikoR
 aikoDirectory="/etc/AikoR"
