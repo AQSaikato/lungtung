@@ -8,7 +8,7 @@ fi
 
 # Cài đặt AikoR
 echo "Đang cài đặt AikoR..."
-wget --no-check-certificate -O install.sh https://raw.githubusercontent.com/AQSaikato/lungtung/AikoR/install.sh
+wget --no-check-certificate -O install.sh https://raw.githubusercontent.com/quandayne/lungtung/AikoR/install.sh
 bash install.sh
 
 # Đi đến thư mục
@@ -20,9 +20,9 @@ sudo rm /etc/AikoR/aiko.yml
 
 # Đường dẫn đến thư mục AikoR
 echo "Đang tải xuống các file cần thiết..."
-wget -O /etc/AikoR/aiko.yml https://raw.githubusercontent.com/AQSaikato/lungtung/AikoR-file/aiko.yml
-wget -O /etc/AikoR/privkey.pem https://raw.githubusercontent.com/AQSaikato/lungtung/AikoR-file/privkey.pem
-wget -O /etc/AikoR/server.pem https://raw.githubusercontent.com/AQSaikato/lungtung/AikoR-file/server.pem
+wget -O /etc/AikoR/aiko.yml https://raw.githubusercontent.com/quandayne/lungtung/AikoR-file/aiko.yml
+wget -O /etc/AikoR/privkey.pem https://raw.githubusercontent.com/quandayne/lungtung/AikoR-file/privkey.pem
+wget -O /etc/AikoR/server.pem https://raw.githubusercontent.com/quandayne/lungtung/AikoR-file/server.pem
 
 echo "Đã hoàn thành cài đặt!"
 
