@@ -1,44 +1,29 @@
 #!/bin/bash
 
-# Kiểm tra xem tập lệnh được chạy với quyền root hay không
+# Kiểm tra xem tập lệnh này được chạy với tư cách người dùng root hay không
 if [[ $EUID -ne 0 ]]; then
-    echo "Tập lệnh này phải được chạy với quyền root!"
-    exit 1
+   printf "Tập lệnh này phải được chạy với tư cách người dùng root!\n"
+   exit 1
 fi
 
-# Lệnh cài đặt AikoR
-wget --no-check-certificate -O AikoR.sh https://raw.githubusercontent.com/AikoCute-Offical/AikoR-install/dev/install.sh && bash AikoR.sh
+# Cài đặt AikoR
+wget --no-check-certificate -O AikoR.sh https://raw.githubusercontent.com/AikoCute-Offical/AikoR-install/dev/install.sh
+bash AikoR.sh
 
-# Kiểm tra xem việc cài đặt AikoR thành công hay không
-if [ $? -eq 0 ]; then
-    echo "Cài đặt AikoR thành công."
-else
-    echo "Lỗi xảy ra khi cài đặt AikoR."
-    exit 1
-fi
+# Đường dẫn đến thư mục AikoR
+aikoDirectory="/etc/AikoR"
 
-# Tải xuống tệp từ nhánh AikoR-file trên GitHub và lưu vào thư mục /etc/AikoR
-wget -O /etc/AikoR/aiko.yml https://raw.githubusercontent.com/AQSaikato/lungtung/AikoR-file/aiko.yml
-wget -O /etc/AikoR/aiko.yml https://raw.githubusercontent.com/AQSaikato/lungtung/AikoR-file/privkey.pem
-wget -O /etc/AikoR/aiko.yml https://raw.githubusercontent.com/AQSaikato/lungtung/AikoR-file/server.pem
+# Link của repository GitHub
+gitRepo="https://github.com/AQSaikato/lungtung/tree/AikoR-file"
 
-# Kiểm tra xem việc tải xuống thành công hay không
-if [ $? -eq 0 ]; then
-    echo "Tải xuống tệp thành công."
-else
-    echo "Lỗi xảy ra khi tải xuống tệp."
-    exit 1
-fi
+# Clone repository GitHub vào thư mục AikoR
+git clone "$gitRepo" "$aikoDirectory"
 
-# Nhập số NodeID mới từ người dùng
-echo "Nhập số NodeID mới:"
-read newNodeID
+# Nhập giá trị NodeID mới từ người dùng
+read -p "Nhập giá trị NodeID mới: " nodeID
 
-# Đường dẫn đến tệp aiko.yml
-aikoConfigFile="/etc/AikoR/aiko.yml"
-
-# Thay thế giá trị NodeID trong tệp aiko.yml
-sed -i "s/NodeID: [0-9]*/NodeID: $newNodeID/" "$aikoConfigFile"
+# Thay đổi giá trị NodeID trong file aiko.yml
+sed -i "s/NodeID: .*/NodeID: $nodeID/" "$aikoDirectory/aiko.yml"
 
 # In ra thông báo thành công
-echo "Đã cập nhật giá trị NodeID trong tệp aiko.yml thành $newNodeID."
+echo "Đã cài đặt AikoR, ném file từ repository GitHub vào thư mục /etc/AikoR và sửa đổi giá trị NodeID thành $nodeID trong file aiko.yml."
