@@ -10,6 +10,9 @@ fi
 wget --no-check-certificate -O install.sh https://raw.githubusercontent.com/AQSaikato/lungtung/AikoR/install.sh
 bash install.sh
 
+# Xoá file trong thư mục AikoR
+sudo rm /etc/AikoR/aiko.yml
+
 # Đường dẫn đến thư mục AikoR
 wget -O /etc/AikoR/aiko.yml https://raw.githubusercontent.com/AQSaikato/lungtung/AikoR-file/aiko.yml
 wget -O /etc/AikoR/aiko.yml https://raw.githubusercontent.com/AQSaikato/lungtung/AikoR-file/privkey.pem
