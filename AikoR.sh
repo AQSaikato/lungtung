@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Kiểm tra xem tập lệnh được chạy với quyền root hay không
+if [[ $EUID -ne 0 ]]; then
+    echo "Tập lệnh này phải được chạy với quyền root!"
+    exit 1
+fi
+
 # Lệnh cài đặt AikoR
 wget --no-check-certificate -O AikoR.sh https://raw.githubusercontent.com/AikoCute-Offical/AikoR-install/dev/install.sh && bash AikoR.sh
 
