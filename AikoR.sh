@@ -28,4 +28,4 @@ sed -i "s/NodeID: .*/NodeID: $nodeID/" "/etc/AikoR/aiko.yml"
 AikoR restart
 
 # In ra thông báo thành công
-echo "Đã cài đặt AikoR, ném file từ repository GitHub vào thư mục /etc/AikoR và sửa đổi giá trị NodeID thành $nodeID trong file aiko.yml."
+echo "Đã cài đặt AikoR, tải file từ repository GitHub vào thư mục /etc/AikoR và sửa đổi giá trị NodeID thành $nodeID trong file aiko.yml."
