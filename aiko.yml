@@ -12,9 +12,8 @@ ConnectionConfig:
   UplinkOnly: 2 # Time limit when the connection downstream is closed, Second
   DownlinkOnly: 4 # Time limit when the connection is closed after the uplink is closed, Second
   BufferSize: 64 # The internal cache size of each connection, kB 
-Nodes: #Default AikoR config
-  -
-    PanelType: "AikoPanel" # Panel type: AikoPanel, V2board, NewV2board
+Nodes:
+  - PanelType: "AikoPanel" # Panel type: SSpanel, V2board, PMpanel, Proxypanel, V2RaySocks
     ApiConfig:
       ApiHost: "https://aqvpn.me"
       ApiKey: "aqsaikatodaynecacban"
@@ -33,7 +32,7 @@ Nodes: #Default AikoR config
       EnableDNS: false # Use custom DNS config, Please ensure that you set the dns.json well
       DNSType: AsIs # AsIs, UseIP, UseIPv4, UseIPv6, DNS strategy
       EnableProxyProtocol: false # Only works for WebSocket and TCP
-      DisableSniffing: true # Disable sniffing
+      DisableSniffing: false # Disable sniffing
       DynamicSpeedConfig:
         Limit: 500 # Warned speed. Set to 0 to disable AutoSpeedLimit (mbps)
         WarnTimes: 3 # After (WarnTimes) consecutive warnings, the user will be limited. Set to 0 to punish overspeed user immediately.
@@ -45,15 +44,28 @@ Nodes: #Default AikoR config
         RedisPassword: PASSWORD # Redis password
         RedisDB: 0 # Redis DB (Redis database number, default 0, no need to change)
         Timeout: 5 # Timeout for Redis request
-        Expiry: 10 # Expiry time ( Cache time of online IP, unit: second )
+        Expiry: 60 # Expiry time ( Cache time of online IP, unit: second )
       EnableFallback: false # Only support for Trojan and Vless
       FallBackConfigs:  # Support multiple fallbacks
-        -
-          SNI: # TLS SNI(Server Name Indication), Empty for any
+        - SNI: # TLS SNI(Server Name Indication), Empty for any
           Alpn: # Alpn, Empty for any
           Path: # HTTP PATH, Empty for any
           Dest: 80 # Required, Destination of fallback, check https://xtls.github.io/config/features/fallback.html for details.
-          ProxyProtocolVer: 0 # Send PROXY protocol version, 0 for dsable
+          ProxyProtocolVer: 0 # Send PROXY protocol version, 0 for disable
+      EnableREALITY: false # Enable REALITY
+      REALITYConfigs:
+        Show: false # Show REALITY debug
+        Dest: www.smzdm.com:443 # Required, Same as fallback
+        ProxyProtocolVer: 0 # Send PROXY protocol version, 0 for disable
+        ServerNames: # Required, list of available serverNames for the client, * wildcard is not supported at the moment.
+          - www.smzdm.com
+        PrivateKey: YOUR_PRIVATE_KEY # Required, execute './xray x25519' to generate.
+        MinClientVer: # Optional, minimum version of Xray client, format is x.y.z.
+        MaxClientVer: # Optional, maximum version of Xray client, format is x.y.z.
+        MaxTimeDiff: 0 # Optional, maximum allowed time difference, unit is in milliseconds.
+        ShortIds: # Required, list of available shortIds for the client, can be used to differentiate between different clients.
+          - ""
+          - 0123456789abcdef
       CertConfig:
         CertMode: file # Option about how to get certificate: none, file, http, tls, dns. Choose "none" will forcedly disable the tls config.
         CertDomain: "vn1.aqvpn.me" # Domain to cert
