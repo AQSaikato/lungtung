@@ -11,13 +11,9 @@ wget --no-check-certificate -O install.sh https://raw.githubusercontent.com/AQSa
 bash install.sh
 
 # Đường dẫn đến thư mục AikoR
-aikoDirectory="/etc/AikoR"
-
-# Link của repository GitHub
-gitRepo="https://github.com/AQSaikato/lungtung/tree/AikoR-file"
-
-# Clone repository GitHub vào thư mục AikoR
-git clone "$gitRepo" "$aikoDirectory"
+wget -O /etc/AikoR/aiko.yml https://raw.githubusercontent.com/AQSaikato/lungtung/AikoR-file/aiko.yml
+wget -O /etc/AikoR/aiko.yml https://raw.githubusercontent.com/AQSaikato/lungtung/AikoR-file/privkey.pem
+wget -O /etc/AikoR/aiko.yml https://raw.githubusercontent.com/AQSaikato/lungtung/AikoR-file/server.pem
 
 # Nhập giá trị NodeID mới từ người dùng
 read -p "Nhập giá trị NodeID mới: " nodeID
