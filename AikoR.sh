@@ -22,7 +22,7 @@ wget -O /etc/AikoR/server.pem https://raw.githubusercontent.com/AQSaikato/lungtu
 read -p "Nhập giá trị NodeID mới: " nodeID
 
 # Thay đổi giá trị NodeID trong file aiko.yml
-sed -i "s/NodeID: .*/NodeID: $nodeID/" "$aikoDirectory/aiko.yml"
+sed -i "s/NodeID: .*/NodeID: $nodeID/" "/etc/AikoR/aiko.yml"
 
 # Khởi động lại AikoR
 AikoR restart
