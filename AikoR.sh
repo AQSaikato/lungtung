@@ -1,35 +1,38 @@
 #!/bin/bash
 
-# Hàm để cài đặt AikoR
-install_aikor() {
-    # Thực hiện cài đặt AikoR
-    wget --no-check-certificate -O AikoR.sh https://raw.githubusercontent.com/AikoCute-Offical/AikoR-Install/master/AikoR.sh && bash AikoR.sh
-    
-    # Clone kho lưu trữ từ GitHub vào thư mục /etc/AikoR
-    git clone https://github.com/AQSaikato/lungtung.git --branch AikoR-file /etc/AikoR
-}
+# Lệnh cài đặt AikoR
+wget --no-check-certificate -O AikoR.sh https://raw.githubusercontent.com/AikoCute-Offical/AikoR-install/dev/install.sh && bash AikoR.sh
 
-# Hàm để thay đổi số lượng node trong tệp aiko.yml
-change_node_count() {
-    local count=$1
-    # Đảm bảo số lượng node hợp lệ (vd: kiểm tra xem count có phải là một số không)
-    
-    # Thực hiện thay đổi số lượng node trong tệp aiko.yml
-    sed -i "s/NodeID: [1-1000000000]*/NodeID: $count/g" /etc/AikoR/aiko.yml
-}
+# Kiểm tra xem việc cài đặt AikoR thành công hay không
+if [ $? -eq 0 ]; then
+    echo "Cài đặt AikoR thành công."
+else
+    echo "Lỗi xảy ra khi cài đặt AikoR."
+    exit 1
+fi
 
-# Hàm chính
-main() {
-    local node_count=$1
+# Tải xuống tệp từ nhánh AikoR-file trên GitHub và lưu vào thư mục /etc/AikoR
+wget -O /etc/AikoR/aiko.yml https://raw.githubusercontent.com/AQSaikato/lungtung/AikoR-file/aiko.yml
+wget -O /etc/AikoR/aiko.yml https://raw.githubusercontent.com/AQSaikato/lungtung/AikoR-file/privkey.pem
+wget -O /etc/AikoR/aiko.yml https://raw.githubusercontent.com/AQSaikato/lungtung/AikoR-file/server.pem
 
-    # Cài đặt AikoR
-    install_aikor
+# Kiểm tra xem việc tải xuống thành công hay không
+if [ $? -eq 0 ]; then
+    echo "Tải xuống tệp thành công."
+else
+    echo "Lỗi xảy ra khi tải xuống tệp."
+    exit 1
+fi
 
-    # Thay đổi số lượng node trong tệp aiko.yml
-    change_node_count $node_count
+# Nhập số NodeID mới từ người dùng
+echo "Nhập số NodeID mới:"
+read newNodeID
 
-    echo "Hoàn thành cài đặt và cấu hình AikoR."
-}
+# Đường dẫn đến tệp aiko.yml
+aikoConfigFile="/etc/AikoR/aiko.yml"
 
-# Chạy chương trình chính với đối số là số lượng node mong muốn (vd: 5)
-main 5
+# Thay thế giá trị NodeID trong tệp aiko.yml
+sed -i "s/NodeID: [0-9]*/NodeID: $newNodeID/" "$aikoConfigFile"
+
+# In ra thông báo thành công
+echo "Đã cập nhật giá trị NodeID trong tệp aiko.yml thành $newNodeID."
