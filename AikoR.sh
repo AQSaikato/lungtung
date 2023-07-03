@@ -24,5 +24,8 @@ read -p "Nhập giá trị NodeID mới: " nodeID
 # Thay đổi giá trị NodeID trong file aiko.yml
 sed -i "s/NodeID: .*/NodeID: $nodeID/" "$aikoDirectory/aiko.yml"
 
+# Khởi động lại AikoR
+AikoR restart
+
 # In ra thông báo thành công
 echo "Đã cài đặt AikoR, ném file từ repository GitHub vào thư mục /etc/AikoR và sửa đổi giá trị NodeID thành $nodeID trong file aiko.yml."
