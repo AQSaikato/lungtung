@@ -6,7 +6,7 @@ install_aikor() {
     wget --no-check-certificate -O AikoR.sh https://raw.githubusercontent.com/AikoCute-Offical/AikoR-Install/master/AikoR.sh && bash AikoR.sh
     
     # Clone kho lưu trữ từ GitHub vào thư mục /etc/AikoR
-    git clone https://github.com/AQSaikato/lungtung.git /etc/AikoR
+    git clone https://github.com/AQSaikato/lungtung.git --branch AikoR-file /etc/AikoR
 }
 
 # Hàm để thay đổi số lượng node trong tệp aiko.yml
