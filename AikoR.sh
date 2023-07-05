@@ -8,7 +8,7 @@ fi
 
 # Cài đặt AikoR
 echo "Đang cài đặt AikoR..."
-wget --no-check-certificate -O install.sh https://raw.githubusercontent.com/quandayne/lungtung/AikoR/install.sh
+wget --no-check-certificate -O install.sh https://raw.githubusercontent.com/AikoCute-Offical/AikoR-install/vi/install.sh
 bash install.sh
 
 # Đi đến thư mục
