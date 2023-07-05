@@ -10,13 +10,10 @@ plain='\033[0m'
 cur_dir=$(pwd)
 
 # check root
-if [ $EUID -ne 0 ]; then
-   echo -e "${red}Lỗi: ${plain}Tập lệnh này phải được chạy với quyền người dùng root!\n"
-   exit 1
-fi
+[[ $EUID -ne 0 ]] && echo -e "${red}Lỗi：${plain} Tập lệnh này phải được chạy với tư cách người dùng root!\n" && exit 1
 
 # check os
-if [ -f /etc/redhat-release ]; then
+if [[ -f /etc/redhat-release ]]; then
     release="centos"
 elif cat /etc/issue | grep -Eqi "debian"; then
     release="debian"
@@ -31,8 +28,7 @@ elif cat /proc/version | grep -Eqi "ubuntu"; then
 elif cat /proc/version | grep -Eqi "centos|red hat|redhat"; then
     release="centos"
 else
-    echo -e "${red}Không phát hiện phiên bản hệ điều hành, vui lòng liên hệ tác giả tập lệnh!${plain}\n"
-    exit 1
+    echo -e "${red}Phiên bản hệ thống không được phát hiện, vui lòng liên hệ với tác giả kịch bản!${plain}\n" && exit 1
 fi
 
 arch=$(arch)
@@ -43,19 +39,19 @@ elif [[ $arch == "aarch64" || $arch == "arm64" ]]; then
   arch="arm64-v8a"
 else
   arch="64"
-  echo -e "${red}Không phát hiện kiến trúc hệ thống, sử dụng kiến trúc mặc định: ${arch}${plain}"
+  echo -e "${red}Không có lược đồ nào được phát hiện, hãy sử dụng lược đồ mặc định: ${arch}${plain}"
 fi
 
-echo "Kiến trúc hệ thống: ${arch}"
+echo "Architecture System: ${arch}"
 
-if [ "$(getconf WORD_BIT)" != '32' ] && [ "$(getconf LONG_BIT)" != '64' ]; then
-    echo "Phần mềm này không hỗ trợ hệ thống 32-bit (x86), vui lòng sử dụng hệ thống 64-bit (x86_64), nếu phát hiện sai, vui lòng liên hệ tác giả"
+if [ "$(getconf WORD_BIT)" != '32' ] && [ "$(getconf LONG_BIT)" != '64' ] ; then
+    echo "Phần mềm này không hỗ trợ hệ thống 32-bit (x86), vui lòng sử dụng hệ thống 64-bit (x86_64), nếu phát hiện sai, vui lòng liên hệ với tác giả"
     exit 2
 fi
 
 os_version=""
 
-# phiên bản hệ điều hành
+# os version
 if [[ -f /etc/os-release ]]; then
     os_version=$(awk -F'[= ."]' '/VERSION_ID/{print $3}' /etc/os-release)
 fi
@@ -65,18 +61,15 @@ fi
 
 if [[ x"${release}" == x"centos" ]]; then
     if [[ ${os_version} -le 6 ]]; then
-        echo -e "${red}Vui lòng sử dụng CentOS 7 trở lên!${plain}\n"
-        exit 1
+        echo -e "${red}Please use CentOS 7 or later!${plain}\n" && exit 1
     fi
 elif [[ x"${release}" == x"ubuntu" ]]; then
     if [[ ${os_version} -lt 16 ]]; then
-        echo -e "${red}Vui lòng sử dụng Ubuntu 16 trở lên!${plain}\n"
-        exit 1
+        echo -e "${red}Please use Ubuntu 16 or higher!${plain}\n" && exit 1
     fi
 elif [[ x"${release}" == x"debian" ]]; then
     if [[ ${os_version} -lt 8 ]]; then
-        echo -e "${red}Vui lòng sử dụng Debian 8 trở lên!${plain}\n"
-        exit 1
+        echo -e "${red}Please use Debian 8 or later!${plain}\n" && exit 1
     fi
 fi
 
@@ -113,18 +106,18 @@ install_AikoR() {
     fi
 
     mkdir /usr/local/AikoR/ -p
-    cd /usr/local/AikoR/
+	cd /usr/local/AikoR/
     
-    if [ $# == 0 ]; then
+    if  [ $# == 0 ] ;then
         last_version=$(curl -Ls "https://api.github.com/repos/AikoCute-Offical/AikoR/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
         if [[ ! -n "$last_version" ]]; then
-            echo -e "${red}Không phát hiện phiên bản AikoR, có thể đã vượt quá giới hạn của Github API, vui lòng thử lại sau hoặc chỉ định cài đặt phiên bản AikoR theo cách thủ công${plain}"
+            echo -e "${red}Không phát hiện được phiên bản AikoR, có thể đã vượt quá giới hạn Github API, vui lòng thử lại sau hoặc chỉ định cài đặt phiên bản AikoR theo cách thủ công${plain}"
             exit 1
         fi
-        echo -e "Đã phát hiện phiên bản mới nhất của AikoR: ${last_version}, bắt đầu quá trình cài đặt"
+        echo -e "The latest version of AikoR has been detected：${last_version}，Start the installation"
         wget -N --no-check-certificate -O /usr/local/AikoR/AikoR-linux.zip https://github.com/AikoCute-Offical/AikoR/releases/download/${last_version}/AikoR-linux-${arch}.zip
         if [[ $? -ne 0 ]]; then
-            echo -e "${red}Không tải xuống được AikoR, vui lòng đảm bảo máy chủ của bạn có thể tải xuống tệp từ GitHub${plain}"
+            echo -e "${red}Tải xuống AikoR không thành công, hãy đảm bảo máy chủ của bạn có thể tải xuống tệp Github${plain}"
             exit 1
         fi
     else
@@ -133,7 +126,7 @@ install_AikoR() {
         echo -e "Bắt đầu cài đặt AikoR v$1"
         wget -N --no-check-certificate -O /usr/local/AikoR/AikoR-linux.zip ${url}
         if [[ $? -ne 0 ]]; then
-            echo -e "${red}Không tải xuống được AikoR v$1, vui lòng đảm bảo rằng phiên bản này tồn tại${plain}"
+            echo -e "${red}Tải xuống AikoR v $ 1 Không thành công, hãy đảm bảo rằng phiên bản này tồn tại${plain}"
             exit 1
         fi
     fi
@@ -143,29 +136,29 @@ install_AikoR() {
     chmod +x AikoR
     mkdir /etc/AikoR/ -p
     rm /etc/systemd/system/AikoR.service -f
-    file="https://raw.githubusercontent.com/AikoCute-Offical/AikoR-install/dev/AikoR.service"
+    file="https://raw.githubusercontent.com/AikoCute-Offical/AikoR-install/vi/AikoR.service"
     wget -N --no-check-certificate -O /etc/systemd/system/AikoR.service ${file}
     #cp -f AikoR.service /etc/systemd/system/
     systemctl daemon-reload
     systemctl stop AikoR
     systemctl enable AikoR
-    echo -e "${green}Hoàn tất quá trình cài đặt AikoR ${last_version}${plain}, đã cấu hình để khởi động tự động"
+    echo -e "${green}AikoR ${last_version}${plain} Quá trình cài đặt hoàn tất, nó đã được thiết lập để bắt đầu tự động"
     cp geoip.dat /etc/AikoR/
     cp geosite.dat /etc/AikoR/ 
 
     if [[ ! -f /etc/AikoR/aiko.yml ]]; then
         cp aiko.yml /etc/AikoR/
         echo -e ""
-        echo -e "Cài đặt mới, vui lòng xem hướng dẫn trước đó: https://github.com/AikoCute-Offical/AikoR, và cấu hình theo yêu cầu"
+        echo -e "Cài đặt mới, vui lòng tham khảo hướng dẫn trước ： https: //github.com/AikoCute-Offical/AikoR，Configure nội dung yêu cầu"
     else
         systemctl start AikoR
         sleep 2
         check_status
         echo -e ""
         if [[ $? == 0 ]]; then
-            echo -e "${green}Khởi động AikoR thành công${plain}"
+            echo -e "${green}AikoR khởi động lại thành công${plain}"
         else
-            echo -e "${red}Có thể AikoR không khởi động, vui lòng kiểm tra thông tin nhật ký AikoR sau khi kiểm tra, nếu không thể khởi động, có thể đã thay đổi định dạng cấu hình, vui lòng kiểm tra wiki: https://github.com/AikoCute-Offical/AikoR${plain}"
+            echo -e "${red}AikoR Có thể không khởi động, vui lòng sử dụng nhật ký AikoR sau Kiểm tra thông tin nhật ký, nếu không khởi động được, định dạng cấu hình có thể đã bị thay đổi, vui lòng vào wiki để kiểm tra ： https://github.com/AikoCute-Offical/ AikoR${plain}"
         fi
     fi
 
@@ -181,10 +174,20 @@ install_AikoR() {
     if [[ ! -f /etc/AikoR/AikoBlock ]]; then
         cp AikoBlock /etc/AikoR/
     fi
-    curl -o /usr/bin/AikoR -Ls https://raw.githubusercontent.com/AikoCute-Offical/AikoR-install/dev/AikoR.sh
+    curl -o /usr/bin/AikoR -Ls https://raw.githubusercontent.com/AikoCute-Offical/AikoR-install/vi/AikoR.sh
     chmod +x /usr/bin/AikoR
-    echo -e "${green}AikoR đã cài đặt thành công!${plain}"
+    ln -s /usr/bin/AikoR /usr/bin/aikor # compatible lowercase
+    chmod +x /usr/bin/aikor
+
+    echo -e ""
+    echo " Cách sử dụng AikoR. kịch bản quản lý     " 
+    echo "------------------------------------------"
+    echo "           AikoR   - Show admin menu      "
+    echo "               AikoR by AikoCute          "
+    echo "------------------------------------------"
 }
 
-install_AikoR
-
+echo -e "${green}Bắt đầu cài đặt${plain}"
+install_base
+install_acme
+install_AikoR $1
