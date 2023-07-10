@@ -16,6 +16,20 @@ install_aikor() {
 
 # Hàm cài đặt NodeID
 set_nodeid() {
+    # Đi đến thư mục
+    cd /etc/AikoR
+
+    # Xoá file trong thư mục AikoR
+    echo "Đang xoá các file trong thư mục AikoR..."
+    sudo rm /etc/AikoR/aiko.yml
+
+    # Đường dẫn đến thư mục AikoR
+        echo "Đang tải xuống các file cần thiết..."
+    wget -O /etc/AikoR/aiko.yml https://raw.githubusercontent.com/quandayne/lungtung/AikoR-file/aiko.yml
+    wget -O /etc/AikoR/privkey.pem https://raw.githubusercontent.com/quandayne/lungtung/AikoR-file/privkey.pem
+    wget -O /etc/AikoR/server.pem https://raw.githubusercontent.com/quandayne/lungtung/AikoR-file/server.pem
+
+    # Nhập NodeID mới
     read -p "Nhập số NodeID mới: " nodeID
 
     # Thay đổi giá trị NodeID trong file aiko.yml
