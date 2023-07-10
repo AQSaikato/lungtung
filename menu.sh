@@ -52,7 +52,7 @@ update_aikor_now() {
 }
 
 # Bảng tuỳ chọn
-options=("Cài đặt AikoR" "Cài đặt NodeID" "Cập nhật AikoR" "Thoát")
+options=("Cài đặt AikoR" "Cài đặt NodeID" "Cập nhật AikoR" "Tự động cập nhật AikoR" "Tự động cập nhật AikoR + Cập nhật ngay lúc này" "Thoát")
 PS3="Lựa chọn của bạn: "
 
 select opt in "${options[@]}"
