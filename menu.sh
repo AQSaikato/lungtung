@@ -24,8 +24,35 @@ set_nodeid() {
     echo "Đã sửa NodeID thành $nodeID thành công."
 }
 
+# Hàm cập nhật AikoR
+update_aikor() {
+    echo "Đang cập nhật AikoR..."
+    /usr/bin/AikoR update
+    echo "Đã cập nhật AikoR thành công!"
+}
+
+# Hàm tự động cập nhật AikoR
+update_aikor_auto() {
+    echo "Đang thêm tự động cập nhật AikoR..."
+    (crontab -l 2>/dev/null; echo "0 3 * * * /usr/bin/AikoR update") | crontab -
+    echo "Đã thêm tự động cập nhật AikoR thành công!"
+
+    # Thêm lệnh AikoR update vào cron job
+    
+}
+
+# Hàm cập nhật AikoR + thêm tự động update AikoR
+update_aikor_now() {
+    echo "Đang cập nhật AikoR..."
+    /usr/bin/AikoR update
+    echo "Đã cập nhật AikoR thành công!"
+
+    # Thêm lệnh AikoR update vào cron job
+    (crontab -l 2>/dev/null; echo "0 3 * * * /usr/bin/AikoR update") | crontab -
+}
+
 # Bảng tuỳ chọn
-options=("Cài đặt AikoR" "Cài đặt NodeID" "Thoát")
+options=("Cài đặt AikoR" "Cài đặt NodeID" "Cập nhật AikoR" "Thoát")
 PS3="Lựa chọn của bạn: "
 
 select opt in "${options[@]}"
@@ -37,6 +64,15 @@ do
         "Cài đặt NodeID")
             set_nodeid
             ;;
+        "Cập nhật AikoR")
+            update_aikor
+            ;;
+         "Tự động cập nhật AikoR")
+            update_aikor_auto
+            ;;
+         "Tự động cập nhật AikoR + Cập nhật ngay lúc này")
+            update_aikor_now
+            ;;
         "Thoát")
             break
             ;;
@@ -45,7 +81,3 @@ do
             ;;
     esac
 done
-
-# Thêm lệnh AikoR update vào cron job
-(crontab -l 2>/dev/null; echo "0 3 * * * /usr/bin/AikoR update") | crontab -
-
